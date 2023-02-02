@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-    FinanceManager financeManager("Users.xml", "Incomes.xml");
+    FinanceManager financeManager("Users.xml", "Incomes.xml", "Expenses.xml");
 
     int userChoice = 0, userOption = 0;
 
@@ -50,13 +50,13 @@ int main()
                     case 1:
                         financeManager.addIncome();
                         break;
-                   /* case 2:
+                    case 2:
                         financeManager.addExpense();
                         break;
                     case 3:
                         financeManager.balanceOfThisMonth();
                         break;
-                    case 4:
+                   /* case 4:
                         financeManager.balanceOfPreviousMonth();
                         break;
                     case 5:

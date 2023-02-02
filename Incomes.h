@@ -8,8 +8,7 @@ using namespace std;
 class Incomes
 {
     int incomeId, userId;
-    string incomeDate, incomeItem;
-    float incomeAmount;
+    string incomeDate, incomeItem, incomeAmount;
 
 public:
 
@@ -17,13 +16,13 @@ public:
     void setupUserId (int newUserId);
     void setupIncomeDate (string newIncomeDate);
     void setupIncomeItem (string newIncomeItem);
-    void setupIncomeAmount (float newIncomeAmount);
+    void setupIncomeAmount (string newIncomeAmount);
 
     int getIncomeId();
     int getUserId();
     string getIncomeDate();
     string getIncomeItem();
-    float getIncomeAmount();
+    string getIncomeAmount();
 };
 
 #endif

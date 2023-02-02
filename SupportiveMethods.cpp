@@ -51,3 +51,72 @@ bool SupportiveMethods::checkTheDate( int year, int month, int day)
     else
         return false;
 }
+
+string SupportiveMethods::changeIncomeCommaToDot(string incomeAmount)
+{
+    for(unsigned int i = 0; i < incomeAmount.length(); i++)
+    {
+        if (incomeAmount[i] == ',')
+        {
+            incomeAmount[i] = '.';
+        }
+        incomeAmount[i];
+    }
+
+    stringstream out;
+    out << fixed << setprecision(2) << stof(incomeAmount);
+    return out.str();
+}
+
+string SupportiveMethods::changeExpenseCommaToDot(string expenseAmount)
+{
+    for(unsigned int i = 0; i < expenseAmount.length(); i++)
+    {
+        if (expenseAmount[i] == ',')
+        {
+            expenseAmount[i] = '.';
+        }
+        expenseAmount[i];
+    }
+
+    stringstream out;
+    out << fixed << setprecision(2) << stof(expenseAmount);
+    return out.str();
+}
+
+int SupportiveMethods::currentDay(string currentDate)
+{
+    istringstream in{currentDate};
+    in.exceptions(ios::failbit);
+    tm tm;
+    in >> get_time(&tm, "%Y-%m-%d");
+
+    int day = tm.tm_mday;
+
+    return day;
+}
+
+int SupportiveMethods::currentMonth(string currentDate)
+{
+    istringstream in{currentDate};
+    in.exceptions(ios::failbit);
+    tm tm;
+    in >> get_time(&tm, "%Y-%m-%d");
+
+    int month = tm.tm_mon + 1;
+
+    return month;
+}
+
+int SupportiveMethods::currentYear(string currentDate)
+{
+    istringstream in{currentDate};
+    in.exceptions(ios::failbit);
+    tm tm;
+    in >> get_time(&tm, "%Y-%m-%d");
+
+    int year = tm.tm_year + 1900;
+
+    return year;
+}
+

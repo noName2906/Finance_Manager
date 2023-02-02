@@ -10,11 +10,21 @@ void FinanceManager::userLogging()
     userManager.userLogging();
     if (userManager.whetherUserIsSignedIn())
     {
-        budgetManager = new budgetManager(INCOMES_FILE_NAME, userManager.getIdLoggedUser());
+        budgetManager = new BudgetManager(INCOMES_FILE_NAME, EXPENSES_FILE_NAME, userManager.getIdLoggedUser());
     }
 }
 
 void FinanceManager::addIncome()
 {
     budgetManager -> addIncome();
+}
+
+void FinanceManager::addExpense()
+{
+    budgetManager -> addExpense();
+}
+
+void FinanceManager::balanceOfThisMonth()
+{
+    budgetManager -> balanceOfThisMonth();
 }

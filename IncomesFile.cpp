@@ -11,18 +11,11 @@ bool IncomesFile::whetherFileIsEmpty()
         return false;
 }
 
-/*User UsersFile::getUserData()
+vector <Incomes> IncomesFile::loadIncomesFromFile(int idLoggedUser)
 {
-    User user;
-    //do dokonczenia
-} */
-
-vector <Incomes> IncomesFile::loadIncomesFromFile()
-{
-    User user;
     Incomes income;
 
-   fstream file(incomesFileName);
+    fstream file(incomesFileName);
 
     CMarkup xml;
     xml.Load(incomesFileName);
@@ -33,33 +26,47 @@ vector <Incomes> IncomesFile::loadIncomesFromFile()
     {
         xml.FindChildElem("IncomeID");
         income.setupIncomeId(atoi(xml.GetChildData().c_str()));
-        cout << "Income ID : " << income.getIncomeId() << endl;
         xml.FindChildElem("UserID");
-        if (atoi(xml.GetChildData().c_str()) == ID_LOGGED_USER)
+        if (atoi(xml.GetChildData().c_str()) == idLoggedUser)
         {
             income.setupUserId(atoi(xml.GetChildData().c_str()));
-            cout << "User ID : " << income.getUserId() << endl;
             xml.FindChildElem("Date");
             income.setupIncomeDate(xml.GetChildData());
-            cout << "Date : " << income.getIncomeDate() << endl;
             xml.FindChildElem("Item");
             income.setupIncomeItem(xml.GetChildData());
-            cout << "Item : " << income.getIncomeItem() << endl;
             xml.FindChildElem("Amount");
-            income.setupIncomeAmount(stof(xml.GetChildData()));
-            cout << "Amount : " << income.getIncomeAmount() << endl;
+            income.setupIncomeAmount(xml.GetChildData());
             incomes.push_back(income);
-            return incomes;
         }
     }
+    return incomes;
 }
 
-int IncomesFile::getIdOfNewIncome()
+int IncomesFile::getIdOfLastIncome()
 {
-    if (incomes.empty() == true)
+    Incomes income;
+
+    fstream file(incomesFileName);
+
+    if (file.good() == false)
+    {
         return 1;
+    }
+
     else
-        return incomes.back().getIncomeId() + 1;
+    {
+        CMarkup xml;
+        xml.Load(incomesFileName);
+        xml.ResetPos();
+        xml.FindElem();
+        xml.IntoElem();
+        while ( xml.FindElem(("Income")) )
+    {
+        xml.FindChildElem("IncomeID");
+        idOfLastIncome = atoi(xml.GetChildData().c_str());
+    }
+        return idOfLastIncome + 1;
+    }
 }
 
 void IncomesFile::addIncomeToFile(Incomes income)

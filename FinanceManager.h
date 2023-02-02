@@ -13,10 +13,11 @@ class FinanceManager
     UserManager userManager;
     BudgetManager *budgetManager;
     const string INCOMES_FILE_NAME;
+    const string EXPENSES_FILE_NAME;
 
 public:
-    FinanceManager(string usersFileName, string incomesFileName)
-    : userManager(usersFileName), INCOMES_FILE_NAME(incomesFileName) {
+    FinanceManager(string usersFileName, string incomesFileName, string expensesFileName)
+    : userManager(usersFileName), INCOMES_FILE_NAME(incomesFileName), EXPENSES_FILE_NAME(expensesFileName) {
     budgetManager = NULL;
     };
     ~FinanceManager()
@@ -28,6 +29,8 @@ public:
     void userRegistration();
     void userLogging();
     void addIncome();
+    void addExpense();
+    void balanceOfThisMonth();
 
 };
 

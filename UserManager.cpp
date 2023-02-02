@@ -112,10 +112,9 @@ int UserManager::userLogging()
             system("pause");
             exit(0);
         }
-        cout << endl;
-        cout << "No user with such login. Try again." << endl << endl;
-        system("pause");
     }
+    cout << "No user with such login. Try again." << endl << endl;
+    system("pause");
     return userLogging();
 }
 
