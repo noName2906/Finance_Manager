@@ -26,8 +26,6 @@ using namespace std;
 
 class BudgetManager
 {
-    int incomeId, expensesId;
-    string incomeDate, incomeItem, incomeAmount, expenseDate, expenseItem, expenseAmount;
     const int ID_LOGGED_USER;
     vector <Incomes> incomes;
     vector <Expenses> expenses;
@@ -53,6 +51,8 @@ public:
     void addIncome();
     void addExpense();
     void balanceOfThisMonth();
+    void balanceOfPreviousMonth();
+    void balanceOfSelectedPeriod();
 };
 
 #endif

@@ -14,19 +14,15 @@ using namespace std;
 
 class UsersFile
 {
-    int id;
-    string login, password, name, surname;
     const string usersFileName;
-    vector <User> users;
-
     bool whetherFileIsEmpty();
-    vector <User> getUserData();
 
 public:
     UsersFile(string USERS_FILE_NAME) : usersFileName(USERS_FILE_NAME) {};
     int getIdOfNewUser();
     void addUserToFile(User user);
     vector <User> loadUsersFromFile();
+    void changePassword(int idLoggedUser, string newPassword);
 
 };
 

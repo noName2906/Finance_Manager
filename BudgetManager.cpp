@@ -33,6 +33,7 @@ Incomes BudgetManager::enterNewIncomeDetails()
 
     int incomeChoice = 0;
     int year = 0, month = 0, day = 0;
+    string incomeDate = "", incomeItem = "", incomeAmount = "";
 
     while(true)
     {
@@ -69,12 +70,15 @@ Incomes BudgetManager::enterNewIncomeDetails()
             system("cls");
             cout << ">>>>>>>> INCOME MENU <<<<<<<<" << endl;
             cout << "-----------------------------" << endl;
-            cout << "Enter your date in format: YYYY-MM-DD: ";
+            cout << "Enter your date in format \"YYYY-MM-DD\": ";
             cin >> incomeDate;
             cout << endl;
 
             if (incomeDate.length() != 10 || incomeDate[4] != '-' || incomeDate[7] != '-')
             {
+                system("cls");
+                cout << ">>>>>>>> INCOME MENU <<<<<<<<" << endl;
+                cout << "-----------------------------" << endl;
                 cout << "Incorrect date format. Please try again." << endl;
                 system ("pause");
                 system ("cls");
@@ -128,6 +132,7 @@ Expenses BudgetManager::enterNewExpenseDetails()
 
     int expenseChoice = 0;
     int year = 0, month = 0, day = 0;
+    string expenseDate ="", expenseItem = "", expenseAmount = "";
 
     while(true)
     {
@@ -145,7 +150,7 @@ Expenses BudgetManager::enterNewExpenseDetails()
         case 1:
             system("cls");
             cout << ">>>>>>>> EXPENSE MENU <<<<<<<<" << endl;
-            cout << "-----------------------------" << endl;
+            cout << "------------------------------" << endl;
             expense.setupExpenseId(expensesFile.getIdOfLastExpense());
             expense.setupUserId(ID_LOGGED_USER);
             expenseDate = supportiveMethods.checkCurrentDate();
@@ -164,11 +169,11 @@ Expenses BudgetManager::enterNewExpenseDetails()
             system("cls");
             cout << ">>>>>>>> EXPENSE MENU <<<<<<<<" << endl;
             cout << "-----------------------------" << endl;
-            cout << "Enter your date in format: YYYY-MM-DD: ";
+            cout << "Enter your date in format \"YYYY-MM-DD\": ";
             cin >> expenseDate;
             cout << endl;
 
-            if (incomeDate.length() != 10 || incomeDate[4] != '-' || incomeDate[7] != '-')
+            if (expenseDate.length() != 10 || expenseDate[4] != '-' || expenseDate[7] != '-')
             {
                 cout << "Incorrect date format. Please try again." << endl;
                 system ("pause");
@@ -231,9 +236,9 @@ void BudgetManager::balanceOfThisMonth()
     string currentDate = supportiveMethods.checkCurrentDate();
     int currentMonth = supportiveMethods.currentMonth(currentDate);
     int currentYear = supportiveMethods.currentYear(currentDate);
-    int currentDay = supportiveMethods.currentDay(currentDate);
 
-    for (int i = 0; i < incomes.size(); i++)
+    incomeDates.clear();
+    for (unsigned int i = 0; i < incomes.size(); i++)
     {
         checkedYear = supportiveMethods.currentYear(incomes[i].getIncomeDate());
         if (checkedYear == currentYear)
@@ -245,7 +250,7 @@ void BudgetManager::balanceOfThisMonth()
                 singleIncomeData.setupIncomeDay(checkedDay);
                 singleIncomeData.setupIncomeMonth(checkedMonth);
                 singleIncomeData.setupIncomeYear(checkedYear);
-                singleIncomeData.setupIncomeAmount(stof(incomes[i].getIncomeAmount()));  // Po konwersji do float brak miejsc po przecinku !!!
+                singleIncomeData.setupIncomeAmount(stof(incomes[i].getIncomeAmount()));
                 incomeDates.push_back(singleIncomeData);
             }
         }
@@ -262,10 +267,14 @@ void BudgetManager::balanceOfThisMonth()
     }
     else
     {
+        system("cls");
+        cout << ">>>>>>>> BALANCE OF THIS MONTH <<<<<<<<" << endl;
+        cout << "---------------------------------------" << endl;
         sumIncomes = incomesSorting(incomeDates);
     }
 
-    for (int i = 0; i < expenses.size(); i++)
+    expenseDates.clear();
+    for (unsigned int i = 0; i < expenses.size(); i++)
     {
         checkedYear = supportiveMethods.currentYear(expenses[i].getExpenseDate());
         if (checkedYear == currentYear)
@@ -303,14 +312,237 @@ void BudgetManager::balanceOfThisMonth()
     }
 }
 
+void BudgetManager::balanceOfPreviousMonth()
+{
+    float sumIncomes = 0;
+    float sumExpenses = 0;
+    system("cls");
+    cout << ">>>>>>>> BALANCE OF PREVIOUS MONTH <<<<<<<<" << endl;
+    cout << "-------------------------------------------" << endl;
+
+    int checkedYear, checkedMonth, checkedDay;
+    SupportiveMethods supportiveMethods;
+    Dates singleIncomeData;
+    Dates singleExpenseData;
+
+    string currentDate = supportiveMethods.checkCurrentDate();
+    int currentMonth = supportiveMethods.currentMonth(currentDate);
+    int currentYear = supportiveMethods.currentYear(currentDate);
+
+    incomeDates.clear();
+    for (unsigned int i = 0; i < incomes.size(); i++)
+    {
+        if (currentMonth - 1 == 0)
+        {
+            currentMonth = 13;
+            currentYear = currentYear - 1;
+        }
+        checkedYear = supportiveMethods.currentYear(incomes[i].getIncomeDate());
+        if (checkedYear == currentYear)
+        {
+            checkedMonth = supportiveMethods.currentMonth(incomes[i].getIncomeDate());
+            if (checkedMonth == currentMonth - 1)
+            {
+                checkedDay = supportiveMethods.currentDay(incomes[i].getIncomeDate());
+                singleIncomeData.setupIncomeDay(checkedDay);
+                singleIncomeData.setupIncomeMonth(checkedMonth);
+                singleIncomeData.setupIncomeYear(checkedYear);
+                singleIncomeData.setupIncomeAmount(stof(incomes[i].getIncomeAmount()));
+                incomeDates.push_back(singleIncomeData);
+            }
+        }
+    }
+
+    if (incomeDates.empty())
+    {
+        system("cls");
+        cout << ">>>>>>>> BALANCE OF PREVIOUS MONTH <<<<<<<<" << endl;
+        cout << "-------------------------------------------" << endl;
+        cout << "INCOMES:" << endl;
+        cout << "--------" << endl;
+        cout << "Your incomes from previous month: " << sumIncomes << " zl" << endl << endl << endl;
+    }
+    else
+    {
+        system("cls");
+        cout << ">>>>>>>> BALANCE OF PREVIOUS MONTH <<<<<<<<" << endl;
+        cout << "-------------------------------------------" << endl;
+        sumIncomes = incomesSorting(incomeDates);
+    }
+
+    expenseDates.clear();
+    for (unsigned int i = 0; i < expenses.size(); i++)
+    {
+        if (currentMonth - 1 == 0)
+        {
+            currentMonth = 13;
+            currentYear = currentYear - 1;
+        }
+        checkedYear = supportiveMethods.currentYear(expenses[i].getExpenseDate());
+        if (checkedYear == currentYear)
+        {
+            checkedMonth = supportiveMethods.currentMonth(expenses[i].getExpenseDate());
+            if (checkedMonth == currentMonth - 1)
+            {
+                checkedDay = supportiveMethods.currentDay(expenses[i].getExpenseDate());
+                singleExpenseData.setupExpenseDay(checkedDay);
+                singleExpenseData.setupExpenseMonth(checkedMonth);
+                singleExpenseData.setupExpenseYear(checkedYear);
+                singleExpenseData.setupExpenseAmount(stof(expenses[i].getExpenseAmount()));
+                expenseDates.push_back(singleExpenseData);
+            }
+        }
+    }
+    if (expenseDates.empty())
+    {
+        cout << "EXPENSES:" << endl;
+        cout << "---------" << endl;
+        cout << "Your expenses from previous month: " << sumExpenses << " zl" <<endl << endl;
+        cout << "YOUR BUDGET:" << endl;
+        cout << "------------" << endl;
+        cout << "Your total budget from previous month: " << sumIncomes - sumExpenses << " zl" << endl;
+        system ("pause");
+    }
+    else
+    {
+        sumExpenses = expensesSorting(expenseDates);
+        cout << endl;
+        cout << "YOUR BUDGET:" << endl;
+        cout << "------------" << endl;
+        cout << "Your total budget from previous month: " << sumIncomes - sumExpenses << " zl" << endl << endl;
+        system ("pause");
+    }
+}
+
+void BudgetManager::balanceOfSelectedPeriod()
+{
+    float sumIncomes = 0;
+    float sumExpenses = 0;
+    string startDate = "", endDate = "";
+    int startYear = 0, startMonth = 0, startDay = 0, endYear = 0, endMonth = 0, endDay = 0;
+
+    system("cls");
+    cout << ">>>>>>>> BALANCE OF SELECTED PERIOD <<<<<<<<" << endl;
+    cout << "--------------------------------------------" << endl << endl;
+
+    cout << "Enter your start date in format YYYY-MM-DD: ";
+    cin >> startDate;
+    cout << endl << endl;
+    cout << "Enter your end date in format YYYY-MM-DD: ";
+    cin >> endDate;
+
+    if (startDate.length() != 10 || startDate[4] != '-' || startDate[7] != '-' || endDate.length() != 10 || endDate[4] != '-' || endDate[7] != '-')
+    {
+        cout << "Incorrect date format. Please try again." << endl;
+        system ("pause");
+        system ("cls");
+        return balanceOfSelectedPeriod();
+    }
+    else
+    {
+        istringstream stm(startDate) ;
+        char delim;
+        stm >> startYear >> delim ;
+        stm >> startMonth >> delim ;
+        stm >> startDay >> delim;
+        istringstream etm(endDate);
+        etm >> endYear >> delim ;
+        etm >> endMonth >> delim ;
+        etm >> endDay >> delim;
+    }
+
+
+    int checkedYear, checkedMonth, checkedDay;
+    SupportiveMethods supportiveMethods;
+    Dates singleIncomeData;
+    Dates singleExpenseData;
+
+    string currentDate = supportiveMethods.checkCurrentDate();
+
+    incomeDates.clear();
+    for (unsigned int i = 0; i < incomes.size(); i++)
+    {
+        checkedYear = supportiveMethods.currentYear(incomes[i].getIncomeDate());
+        if (checkedYear >= startYear && checkedYear <= endYear)
+        {
+            checkedMonth = supportiveMethods.currentMonth(incomes[i].getIncomeDate());
+            checkedDay = supportiveMethods.currentDay(incomes[i].getIncomeDate());
+            if ((checkedYear == startYear && checkedMonth == startMonth && checkedDay >= startDay) || (checkedYear == startYear && checkedMonth > startMonth) || (checkedYear > startYear))
+            {
+                if ((checkedYear == endYear && checkedMonth == endMonth && checkedDay <= endDay) || (checkedYear == endYear && checkedMonth < endMonth) || (checkedYear < endYear))
+                {
+                    singleIncomeData.setupIncomeDay(checkedDay);
+                    singleIncomeData.setupIncomeMonth(checkedMonth);
+                    singleIncomeData.setupIncomeYear(checkedYear);
+                    singleIncomeData.setupIncomeAmount(stof(incomes[i].getIncomeAmount()));
+                    incomeDates.push_back(singleIncomeData);
+                }
+            }
+        }
+    }
+
+    if (incomeDates.empty())
+    {
+        system("cls");
+        cout << ">>>>>>>> BALANCE OF SELECTED PERIOD <<<<<<<<" << endl;
+        cout << "--------------------------------------------" << endl;
+        cout << "INCOMES:" << endl;
+        cout << "--------" << endl;
+        cout << "Your incomes from " << startDate << " to " << endDate << ": " << sumIncomes << " zl" << endl << endl << endl;
+    }
+    else
+    {
+        system("cls");
+        cout << ">>>>>>>> BALANCE OF SELECTED PERIOD <<<<<<<<" << endl;
+        cout << "--------------------------------------------" << endl;
+        sumIncomes = incomesSorting(incomeDates);
+    }
+
+    expenseDates.clear();
+    for (unsigned int i = 0; i < expenses.size(); i++)
+    {
+        checkedYear = supportiveMethods.currentYear(expenses[i].getExpenseDate());
+        if (checkedYear >= startYear && checkedYear <= endYear)
+        {
+            checkedMonth = supportiveMethods.currentMonth(expenses[i].getExpenseDate());
+            checkedDay = supportiveMethods.currentDay(expenses[i].getExpenseDate());
+            if ((checkedYear == startYear && checkedMonth == startMonth && checkedDay >= startDay) || (checkedYear == startYear && checkedMonth > startMonth) || (checkedYear > startYear))
+            {
+                if ((checkedYear == endYear && checkedMonth == endMonth && checkedDay <= endDay) || (checkedYear == endYear && checkedMonth < endMonth) || (checkedYear < endYear))
+                {
+                    singleExpenseData.setupExpenseDay(checkedDay);
+                    singleExpenseData.setupExpenseMonth(checkedMonth);
+                    singleExpenseData.setupExpenseYear(checkedYear);
+                    singleExpenseData.setupExpenseAmount(stof(expenses[i].getExpenseAmount()));
+                    expenseDates.push_back(singleExpenseData);
+                }
+            }
+        }
+    }
+    if (expenseDates.empty())
+    {
+        cout << "EXPENSES:" << endl;
+        cout << "---------" << endl;
+        cout << "Your expenses from " << startDate << " to " << endDate << ": " << sumExpenses << " zl" << endl << endl << endl;
+        cout << "YOUR BUDGET:" << endl;
+        cout << "------------" << endl;
+        cout << "Your total budget in selected period: " << sumIncomes - sumExpenses << " zl" << endl;
+        system ("pause");
+    }
+    else
+    {
+        sumExpenses = expensesSorting(expenseDates);
+        cout << endl;
+        cout << "YOUR BUDGET:" << endl;
+        cout << "------------" << endl;
+        cout << "Your total budget in selected period: " << sumIncomes - sumExpenses << " zl" << endl << endl;
+        system ("pause");
+    }
+}
+
 float BudgetManager::incomesSorting(vector <Dates> incomeDates)
 {
     float sumIncomes = 0;
-
-    system("cls");
-    cout << ">>>>>>>> BALANCE OF THIS MONTH <<<<<<<<" << endl;
-    cout << "---------------------------------------" << endl;
-
 
     cout << "INCOMES:" << endl;
     cout << "--------" << endl;
@@ -348,12 +580,12 @@ float BudgetManager::incomesSorting(vector <Dates> incomeDates)
         }
         else
         {
-            cout << incomeDates[i].getIncomeYear() <<"-"<< incomeDates[i].getIncomeMonth() << "-" << incomeDates[i].getIncomeDay() << ": " << incomeDates[i].getIncomeAmount() << " zl" << endl;
+            cout << incomeDates[i].getIncomeYear() <<"-"<< incomeDates[i].getIncomeMonth() << "-" << incomeDates[i].getIncomeDay() << ": " << fixed << setprecision(2) << incomeDates[i].getIncomeAmount() << " zl" << endl;
             sumIncomes += incomeDates[i].getIncomeAmount();
         }
     }
     cout << "------------------------------" << endl;
-    cout << "Your incomes from this month: " << sumIncomes << " zl" << endl << endl;
+    cout << "Your incomes: " << sumIncomes << " zl" << endl << endl;
     return sumIncomes;
     Sleep(1200);
 }
@@ -386,7 +618,6 @@ float BudgetManager::expensesSorting(vector <Dates> expenseDates)
                 expenseDates[i] = expenseDates[j];
                 expenseDates[j] = temp;
             }
-
         }
     }
 
@@ -403,7 +634,7 @@ float BudgetManager::expensesSorting(vector <Dates> expenseDates)
         }
     }
     cout << "-------------------------------" << endl;
-    cout << "Your expenses from this month: " << sumExpenses << " zl" << endl << endl;
+    cout << "Your expenses: " << sumExpenses << " zl" << endl << endl;
     return sumExpenses;
     Sleep(1200);
 }

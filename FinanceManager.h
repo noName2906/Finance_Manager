@@ -31,6 +31,9 @@ public:
     void addIncome();
     void addExpense();
     void balanceOfThisMonth();
+    void balanceOfPreviousMonth();
+    void balanceOfSelectedPeriod();
+    void changePassword();
 
 };
 

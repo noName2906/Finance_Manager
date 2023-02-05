@@ -6,7 +6,10 @@ void UserManager::userRegistration()
     users.push_back(user);
     usersFile.addUserToFile(user);
 
-    cout << endl << "Account created successfully" << endl << endl;
+    system("cls");
+    cout << ">>>>> USER SIGN UP <<<<<" << endl;
+    cout << "------------------------" << endl;
+    cout << "Account created successfully" << endl << endl;
     system("pause");
 }
 
@@ -21,7 +24,7 @@ User UserManager::enterNewUserDetails()
     {
         system("cls");
         cout << ">>>>> USER SIGN UP <<<<<" << endl;
-        cout << "-----------------------------" << endl;
+        cout << "------------------------" << endl;
         cout << "Enter your name: ";
         cin >> name;
         user.setupName(name);
@@ -113,6 +116,9 @@ int UserManager::userLogging()
             exit(0);
         }
     }
+    system ("cls");
+    cout << ">>>>> USER SIGN IN <<<<<" << endl;
+    cout << "------------------------" << endl;
     cout << "No user with such login. Try again." << endl << endl;
     system("pause");
     return userLogging();
@@ -129,4 +135,23 @@ bool UserManager::whetherUserIsSignedIn()
 int UserManager::getIdLoggedUser()
 {
     return idLoggedUser;
+}
+
+void UserManager::changePassword()
+{
+    string newPassword = "";
+
+    system ("cls");
+    cout << ">>>>> CHANGE PASSWORD  <<<<<" << endl;
+    cout << "----------------------------" << endl;
+    cout << "Enter your new password: ";
+    cin >> newPassword;
+
+    usersFile.changePassword(idLoggedUser, newPassword);
+
+    system ("cls");
+    cout << ">>>>> CHANGE PASSWORD  <<<<<" << endl;
+    cout << "----------------------------" << endl;
+    cout << "Your password has changed correctly" << endl;
+    Sleep(1200);
 }

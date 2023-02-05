@@ -56,16 +56,17 @@ int main()
                     case 3:
                         financeManager.balanceOfThisMonth();
                         break;
-                   /* case 4:
+                    case 4:
                         financeManager.balanceOfPreviousMonth();
                         break;
                     case 5:
                         financeManager.balanceOfSelectedPeriod();
+                        break;
                     case 6:
                         financeManager.changePassword();
+                        break;
                     case 7:
-                        financeManager.logout();
-                        return main(); */
+                        return main();
                     default:
                         cout << endl;
                         cout << "Incorrect choice. Try once again!" << endl;

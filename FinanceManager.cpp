@@ -28,3 +28,19 @@ void FinanceManager::balanceOfThisMonth()
 {
     budgetManager -> balanceOfThisMonth();
 }
+
+void FinanceManager::balanceOfPreviousMonth()
+{
+    budgetManager -> balanceOfPreviousMonth();
+}
+
+void FinanceManager::balanceOfSelectedPeriod()
+{
+    budgetManager -> balanceOfSelectedPeriod();
+}
+
+void FinanceManager::changePassword()
+{
+    userManager.changePassword();
+}
+
